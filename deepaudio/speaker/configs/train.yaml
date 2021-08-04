@@ -1,0 +1,10 @@
+# @package _group_
+
+defaults:
+  - feature: fbank
+  - augment: default
+  - dataset: voxceleb2
+  - criterion: aamsoftmax
+  - lr_scheduler: warmup_reduce_lr_on_plateau
+  - model: ecapa
+  - trainer: cpu
