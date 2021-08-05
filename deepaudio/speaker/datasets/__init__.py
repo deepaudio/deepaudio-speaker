@@ -35,4 +35,4 @@ for file in os.listdir(data_module_dir):
             path = os.path.join(data_module_dir, file, subfile)
             if subfile.endswith(".py"):
                 data_module_name = subfile[: subfile.find(".py")] if subfile.endswith(".py") else subfile
-                module = importlib.import_module(f"deepMM.speaker.datasets.{file}.{data_module_name}")
+                module = importlib.import_module(f"deepaudio.speaker.datasets.{file}.{data_module_name}")

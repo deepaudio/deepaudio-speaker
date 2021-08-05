@@ -45,10 +45,10 @@ for file in os.listdir(criterion_dir):
             path = os.path.join(criterion_dir, file, subfile)
             if subfile.endswith(".py"):
                 python_file = subfile[: subfile.find(".py")] if subfile.endswith(".py") else subfile
-                module = importlib.import_module(f"deepMM.speaker.criterion.{file}.{python_file}")
+                module = importlib.import_module(f"deepaudio.speaker.criterion.{file}.{python_file}")
         continue
 
     path = os.path.join(criterion_dir, file)
     if file.endswith(".py"):
         criterion_name = file[: file.find(".py")] if file.endswith(".py") else file
-        module = importlib.import_module(f"deepMM.speaker.criterion.{criterion_name}")
+        module = importlib.import_module(f"deepaudio.speaker.criterion.{criterion_name}")

@@ -61,11 +61,13 @@ class SpeakerUttDataLoader(DataLoader):
             num_workers: int,
             min_num_frames: int,
             max_num_frames: int,
+            batch_size: int,
             **kwargs,
     ) -> None:
         super(SpeakerUttDataLoader, self).__init__(
             dataset=dataset,
             num_workers=num_workers,
+            batch_size=batch_size,
             **kwargs,
         )
         self.min_num_frames = min_num_frames

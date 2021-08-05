@@ -33,7 +33,8 @@ class LightningVoxceleb2DataModule(pl.LightningDataModule):
             dataset=self.train_dataset,
             num_workers=self.configs.trainer.num_workers,
             min_num_frames=self.configs.model.min_num_frames,
-            max_num_frames=self.configs.model.max_num_frames
+            max_num_frames=self.configs.model.max_num_frames,
+            batch_size=self.configs.trainer.batch_size,
         )
 
     def val_dataloader(self) -> DataLoader:
@@ -41,7 +42,8 @@ class LightningVoxceleb2DataModule(pl.LightningDataModule):
             dataset=self.valid_dataset,
             num_workers=self.configs.trainer.num_workers,
             min_num_frames=self.configs.model.min_num_frames,
-            max_num_frames=self.configs.model.max_num_frames
+            max_num_frames=self.configs.model.max_num_frames,
+            batch_size=self.configs.trainer.batch_size
         )
 
     def _spk2wav_utts(self, spk2wav, spk2id):

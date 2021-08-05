@@ -45,4 +45,4 @@ for file in os.listdir(f"{data_dir}"):
             path = os.path.join(path, module_file)
             if module_file.endswith(".py"):
                 module_name = module_file[: module_file.find(".py")] if module_file.endswith(".py") else module_file
-                module = importlib.import_module(f"deepMM.speaker.data.feature.{file}.{module_name}")
+                module = importlib.import_module(f"deepaudio.speaker.data.feature.{file}.{module_name}")
