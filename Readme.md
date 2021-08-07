@@ -17,7 +17,7 @@ Deepaudio-tts is coming soon.
 ## Installation
 ```
 conda create -n deepaudio python=3.8.5
-conda activate pyannote
+conda activate deepaudio
 conda install numpy cffi
 conda install libsndfile=1.0.28 -c conda-forge
 git clone https://github.com/deepaudio/deepaudio-speaker.git
