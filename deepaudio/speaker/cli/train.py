@@ -24,7 +24,10 @@ def hydra_main(configs: DictConfig) -> None:
     trainer.fit(model, data_module)
 
 
-if __name__ == '__main__':
+def main():
     hydra_train_init()
     hydra_main()
 
+
+if __name__ == '__main__':
+    main()
