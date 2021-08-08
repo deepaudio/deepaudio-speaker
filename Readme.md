@@ -59,9 +59,13 @@ Todo
 
 ## Model Architecture
 [**ECAPA-TDNN**](https://arxiv.org/pdf/2005.07143.pdf) This is an unofficial implementation from @lawlict. Please find more details in this [link](https://github.com/lawlict/ECAPA-TDNN).
+
 [**ECAPA-TDNN**](https://arxiv.org/pdf/2005.07143.pdf) This is implemented by @joonson. Please find more details in this [link](https://github.com/clovaai/voxceleb_trainer/issues/86#issuecomment-739991154).
+
 [**ResNetSE34L**](https://arxiv.org/pdf/2003.11982.pdf) This is borrowed from [voxceleb trainer](https://github.com/clovaai/voxceleb_trainer).
-[** ResNetSE34V2**](https://arxiv.org/pdf/2003.11982.pdf) This is borrowed from [voxceleb trainer](https://github.com/clovaai/voxceleb_trainer).
+
+[**ResNetSE34V2**](https://arxiv.org/pdf/2003.11982.pdf) This is borrowed from [voxceleb trainer](https://github.com/clovaai/voxceleb_trainer).
+
 [**resnet101**](https://arxiv.org/abs/2012.14952) This is proposed by BUT for speaker diarization. Please note that the feature used in this framework is different from [VB-HMM](https://github.com/BUTSpeechFIT/VBx) 
 
 ## How to contribute to deepaudio-speaker
