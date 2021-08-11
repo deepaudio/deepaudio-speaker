@@ -30,10 +30,8 @@ def _collate_fn(batch, min_num_frames, max_num_frames):
             return feature[start:start + num_frames]
 
     min_num_frames_batch = get_min_num_frames(batch)
-    if min_num_frames < min_num_frames_batch:
-        num_frames = min_num_frames
-    else:
-        num_frames = np.random.randint(min_num_frames, max_num_frames)
+    num_frames = np.random.randint(min_num_frames, max_num_frames)
+    num_frames = min(num_frames, min_num_frames_batch)
 
     X = []
     y = []
