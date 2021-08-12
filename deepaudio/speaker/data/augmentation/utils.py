@@ -1,5 +1,5 @@
-from pathlib import Path
+import glob
 
 
 def get_all_wavs(parent_dir):
-    return list(Path(parent_dir).glob('**/*.wav'))
+    return glob.glob(f'{parent_dir}/**/*.wav', recursive=True)
