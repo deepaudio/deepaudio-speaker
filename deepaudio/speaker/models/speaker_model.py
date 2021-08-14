@@ -18,7 +18,9 @@ class SpeakerModel(pl.LightningModule):
         self.num_classes = num_classes
         self.gradient_clip_val = configs.trainer.gradient_clip_val
         self.current_val_loss = 100.0
+        self.build_model()
         self.criterion = self.configure_criterion(configs.criterion.name)
+
 
     def build_model(self):
         raise NotImplementedError

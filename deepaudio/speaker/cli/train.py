@@ -19,7 +19,6 @@ def hydra_main(configs: DictConfig) -> None:
     data_module = DATA_MODULE_REGISTRY[configs.dataset.name](configs)
     data_module.prepare_data()
     model = MODEL_REGISTRY[configs.model.name](configs=configs, num_classes=data_module.num_classes)
-    model.build_model()
     trainer = get_pl_trainer(configs, num_devices, logger)
     trainer.fit(model, data_module)
 

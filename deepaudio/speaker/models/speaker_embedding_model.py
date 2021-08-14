@@ -36,7 +36,8 @@ class SpeakerEmbeddingModel(SpeakerModel):
         checkpoint["configs"] = self.configs
         checkpoint["num_classes"] = self.num_classes
 
-    def from_pretrained(self, path_for_pl,
+    @classmethod
+    def from_pretrained(cls, path_for_pl,
                         map_location=None,
                         strict=False):
         loaded_checkpoint = pl_load(path_for_pl, map_location=map_location)
@@ -52,5 +53,6 @@ class SpeakerEmbeddingModel(SpeakerModel):
             )
 
     def make_embedding(self, feature):
-        model = self.model.eval()
+        if self.model.training:
+            self.model = self.model.eval()
         return self.model(feature).cpu().detach().numpy()
