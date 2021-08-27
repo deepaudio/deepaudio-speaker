@@ -7,6 +7,7 @@ from typing import Tuple, Union, Iterable
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning.callbacks import LearningRateMonitor
 import pytorch_lightning as pl
+from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger, LightningLoggerBase, WandbLogger
 
 
@@ -70,6 +71,13 @@ def get_pl_trainer(
 ) -> pl.Trainer:
     amp_backend = None
 
+    checkpoint_callback = ModelCheckpoint(
+        monitor="val_loss",
+        filename="deepaudio-{epoch:02d}-{val_loss:.2f}",
+        save_top_k=configs.trainer.num_checkpoints,
+        mode="min",
+    )
+
     if hasattr(configs.trainer, "amp_backend"):
         amp_backend = "apex" if configs.trainer.amp_backend == "apex" else "native"
 
@@ -81,7 +89,7 @@ def get_pl_trainer(
                              logger=logger,
                              auto_scale_batch_size=configs.trainer.auto_scale_batch_size,
                              max_epochs=configs.trainer.max_epochs,
-                             callbacks=[LearningRateMonitor(logging_interval='step')])
+                             callbacks=[LearningRateMonitor(logging_interval='step'), checkpoint_callback])
     elif configs.trainer.name == "gpu":
         trainer = pl.Trainer(accelerator=configs.trainer.accelerator,
                              gpus=num_devices,
@@ -92,7 +100,7 @@ def get_pl_trainer(
                              logger=logger,
                              auto_scale_batch_size=configs.trainer.auto_scale_batch_size,
                              max_epochs=configs.trainer.max_epochs,
-                             callbacks=[LearningRateMonitor(logging_interval='step')])
+                             callbacks=[LearningRateMonitor(logging_interval='step'), checkpoint_callback])
     elif configs.trainer.name == "tpu":
         trainer = pl.Trainer(accelerator=configs.trainer.accelerator,
                              tpu_cores=configs.trainer.tpu_cores,
@@ -103,7 +111,7 @@ def get_pl_trainer(
                              logger=logger,
                              auto_scale_batch_size=configs.trainer.auto_scale_batch_size,
                              max_epochs=configs.trainer.max_epochs,
-                             callbacks=[LearningRateMonitor(logging_interval='step')])
+                             callbacks=[LearningRateMonitor(logging_interval='step'), checkpoint_callback])
     elif configs.trainer.name == "gpu-fp16":
         trainer = pl.Trainer(precision=configs.trainer.precision,
                              accelerator=configs.trainer.accelerator,
@@ -116,7 +124,7 @@ def get_pl_trainer(
                              logger=logger,
                              auto_scale_batch_size=configs.trainer.auto_scale_batch_size,
                              max_epochs=configs.trainer.max_epochs,
-                             callbacks=[LearningRateMonitor(logging_interval='step')])
+                             callbacks=[LearningRateMonitor(logging_interval='step'), checkpoint_callback])
     elif configs.trainer.name == "tpu-fp16":
         trainer = pl.Trainer(precision=configs.trainer.precision,
                              accelerator=configs.trainer.accelerator,
@@ -128,7 +136,7 @@ def get_pl_trainer(
                              logger=logger,
                              auto_scale_batch_size=configs.trainer.auto_scale_batch_size,
                              max_epochs=configs.trainer.max_epochs,
-                             callbacks=[LearningRateMonitor(logging_interval='step')])
+                             callbacks=[LearningRateMonitor(logging_interval='step'), checkpoint_callback])
     elif configs.trainer.name == "cpu-fp64":
         trainer = pl.Trainer(precision=configs.trainer.precision,
                              accelerator=configs.trainer.accelerator,
@@ -139,7 +147,7 @@ def get_pl_trainer(
                              logger=logger,
                              auto_scale_batch_size=configs.trainer.auto_scale_batch_size,
                              max_epochs=configs.trainer.max_epochs,
-                             callbacks=[LearningRateMonitor(logging_interval='step')])
+                             callbacks=[LearningRateMonitor(logging_interval='step'), checkpoint_callback])
     else:
         raise ValueError(f"Unsupported trainer: {configs.trainer.name}")
 

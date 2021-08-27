@@ -35,6 +35,7 @@ class LightningVoxceleb2DataModule(pl.LightningDataModule):
             min_num_frames=self.configs.model.min_num_frames,
             max_num_frames=self.configs.model.max_num_frames,
             batch_size=self.configs.trainer.batch_size,
+            shuffle=True
         )
 
     def val_dataloader(self) -> DataLoader:

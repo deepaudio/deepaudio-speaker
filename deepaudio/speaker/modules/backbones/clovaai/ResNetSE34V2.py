@@ -104,6 +104,7 @@ def MainModel(configs):
     model = ResNetSE(SEBasicBlock, [3, 4, 6, 3],
                      num_filters,
                      nOut=configs.model.embed_dim,
-                     encoder_type=configs.model.encoder_type
+                     encoder_type=configs.model.encoder_type,
+                     n_mels=configs.feature.n_mels
                      )
     return model

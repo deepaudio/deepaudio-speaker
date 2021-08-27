@@ -3,7 +3,7 @@ from torch import Tensor
 
 from deepaudio.speaker.models import register_model
 from deepaudio.speaker.models.speaker_embedding_model import SpeakerEmbeddingModel
-from deepaudio.speaker.modules.backbones.clovaai.ResNetSE34L import MainModel
+from deepaudio.speaker.modules.backbones.clovaai.ResNetSE34V2 import MainModel
 
 from .configurations import ClovaaiResnetse34V2Configs
 

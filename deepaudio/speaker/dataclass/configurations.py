@@ -89,6 +89,9 @@ class BaseTrainerConfigs(DeepMMDataclass):
     max_epochs: int = field(
         default=20, metadata={"help": "Stop training once this number of epochs is reached."}
     )
+    num_checkpoints: int = field(
+        default=20, metadata={"help": "Number of checkpoints to be stored."}
+    )
     auto_scale_batch_size: str = field(
         default=False, metadata={"help": "If set to True, will initially run a batch size finder trying to find "
                                                "the largest batch size that fits into memory."}

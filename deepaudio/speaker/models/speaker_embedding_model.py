@@ -28,6 +28,14 @@ class SpeakerEmbeddingModel(SpeakerModel):
         y = batch['y']
         embeddings = self.forward(X)
         loss = self.criterion(embeddings, y)
+        self.log(
+            "val_loss",
+            loss,
+            on_step=False,
+            on_epoch=True,
+            prog_bar=True,
+            logger=True,
+        )
         return {
             'val_loss': loss
         }
