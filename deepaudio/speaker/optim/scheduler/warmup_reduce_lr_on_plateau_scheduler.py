@@ -22,6 +22,7 @@
 
 from omegaconf import DictConfig
 from torch.optim import Optimizer
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -55,7 +56,7 @@ class WarmupReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
 
 
 @register_scheduler("warmup_reduce_lr_on_plateau", dataclass=WarmupReduceLROnPlateauConfigs)
-class WarmupReduceLROnPlateauScheduler(LearningRateScheduler):
+class WarmupReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROnPlateau):
     r"""
     Warmup learning rate until `warmup_steps` and reduce learning rate on plateau after.
 

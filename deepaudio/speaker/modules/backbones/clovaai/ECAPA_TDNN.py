@@ -181,7 +181,7 @@ class Res2Net(nn.Module):
 def MainModel(configs):
     model = Res2Net(Bottle2neck,
                     C=configs.model.channels,
-                    n_mels=configs.feature.n_mel,
+                    n_mels=configs.feature.n_mels,
                     model_scale=configs.model.model_scale,
                     nOut=configs.model.embed_dim,
                     context=configs.model.context,

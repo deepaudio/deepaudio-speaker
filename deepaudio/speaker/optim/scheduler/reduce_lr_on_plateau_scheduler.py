@@ -23,6 +23,7 @@
 from dataclasses import dataclass, field
 from omegaconf import DictConfig
 from torch.optim import Optimizer
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from typing import Optional
 
 from deepaudio.speaker.dataclass.configurations import LearningRateSchedulerConfigs
@@ -44,7 +45,7 @@ class ReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
 
 
 @register_scheduler("reduce_lr_on_plateau", dataclass=ReduceLROnPlateauConfigs)
-class ReduceLROnPlateauScheduler(LearningRateScheduler):
+class ReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROnPlateau):
     r"""
     Reduce learning rate when a metric has stopped improving. Models often benefit from reducing the learning rate by
     a factor of 2-10 once learning stagnates. This scheduler reads a metrics quantity and if no improvement is seen
