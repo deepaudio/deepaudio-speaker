@@ -5,7 +5,7 @@ from deepaudio.speaker.dataclass.configurations import DeepMMDataclass
 @dataclass
 class ClovaaiResnetse34lConfigs(DeepMMDataclass):
     name: str = field(
-        default="clovaai_ecapa", metadata={"help": "Model name"}
+        default="clovaai_resnetse34l", metadata={"help": "Model name"}
     )
     embed_dim: int = field(
         default=256, metadata={"help": "Dimension of embedding."}
