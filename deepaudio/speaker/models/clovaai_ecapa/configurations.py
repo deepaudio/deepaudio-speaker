@@ -32,7 +32,7 @@ class ClovaaiECAPAConfigs(DeepMMDataclass):
         default="adam", metadata={"help": "Optimizer for training."}
     )
     min_num_frames: int = field(
-        default=200, metadata={"help": "Min num frames."}
+        default=300, metadata={"help": "Min num frames."}
     )
     max_num_frames: int = field(
         default=400, metadata={"help": "Max num frames."}

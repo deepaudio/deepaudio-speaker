@@ -46,12 +46,12 @@ pip install -e .
 $ deepaudio-speaker-train  \
     dataset=voxceleb2 \
     dataset.dataset_path=/your/path/to/voxceleb2/dev/wav/ \
-    model=ecapa \
+    model=clovaai_ecapa \
     model.channels=1024 \
     feature=fbank \
-    lr_scheduler=warmup_reduce_lr_on_plateau \
+    lr_scheduler=reduce_lr_on_plateau \
     trainer=gpu \
-    criterion=aamsoftmax
+    criterion=pyannote_aamsoftmax
 ```
 - Example2: Extract speaker embedding with trained model.
 
@@ -66,7 +66,7 @@ Todo
 
 [**ResNetSE34V2**](https://arxiv.org/pdf/2003.11982.pdf) This is borrowed from [voxceleb trainer](https://github.com/clovaai/voxceleb_trainer).
 
-[**resnet101**](https://arxiv.org/abs/2012.14952) This is proposed by BUT for speaker diarization. Please note that the feature used in this framework is different from [VB-HMM](https://github.com/BUTSpeechFIT/VBx) 
+[**Resnet101**](https://arxiv.org/abs/2012.14952) This is proposed by BUT for speaker diarization. Please note that the feature used in this framework is different from [VB-HMM](https://github.com/BUTSpeechFIT/VBx) 
 
 ## How to contribute to deepaudio-speaker
 

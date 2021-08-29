@@ -11,13 +11,13 @@ class ECAPAConfigs(DeepMMDataclass):
         default=192, metadata={"help": "Dimension of embedding."}
     )
     channels: int = field(
-        default=512, metadata={"help": "Dimension of embedding."}
+        default=1024, metadata={"help": "Dimension of embedding."}
     )
     optimizer: str = field(
         default="adam", metadata={"help": "Optimizer for training."}
     )
     min_num_frames: int = field(
-        default=200, metadata={"help": "Min num frames."}
+        default=300, metadata={"help": "Min num frames."}
     )
     max_num_frames: int = field(
         default=400, metadata={"help": "Max num frames."}
