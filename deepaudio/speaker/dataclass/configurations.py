@@ -108,6 +108,9 @@ class CPUTrainerConfigs(BaseTrainerConfigs):
     use_cuda: bool = field(
         default=False, metadata={"help": "If set True, will train with GPU"}
     )
+    num_workers: int = field(
+        default=1, metadata={"help": "The number of cpu cores"}
+    )
 
 
 @dataclass

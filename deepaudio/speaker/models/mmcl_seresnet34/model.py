@@ -3,15 +3,15 @@ from torch import Tensor
 
 from deepaudio.speaker.models import register_model
 from deepaudio.speaker.models.speaker_embedding_model import SpeakerEmbeddingModel
-from deepaudio.speaker.modules.backbones.clovaai.ResNetSE34V2 import MainModel
+from deepaudio.speaker.modules.backbones.mmcl.seresnet_asv import MainModel
 
-from .configurations import ClovaaiResnetse34V2Configs
+from .configurations import MMCLSeResnet34Configs
 
 
-@register_model('clovaai_resnetse34v2', dataclass=ClovaaiResnetse34V2Configs)
-class ClovaaiResnetSE34V2Model(SpeakerEmbeddingModel):
+@register_model('mmcl_seresnet34', dataclass=MMCLSeResnet34Configs)
+class MMCLSeResnet34Model(SpeakerEmbeddingModel):
     def __init__(self, configs: DictConfig, num_classes: int):
-        super(SpeakerEmbeddingModel, self).__init__(configs, num_classes)
+        super(MMCLSeResnet34Model, self).__init__(configs, num_classes)
 
     def build_model(self):
         self.model = MainModel(

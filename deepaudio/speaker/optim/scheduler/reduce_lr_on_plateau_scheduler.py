@@ -40,7 +40,7 @@ class ReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
         default=1, metadata={"help": "Number of epochs with no improvement after which learning rate will be reduced."}
     )
     lr_factor: float = field(
-        default=0.3, metadata={"help": "Factor by which the learning rate will be reduced. new_lr = lr * factor."}
+        default=0.9, metadata={"help": "Factor by which the learning rate will be reduced. new_lr = lr * factor."}
     )
 
 

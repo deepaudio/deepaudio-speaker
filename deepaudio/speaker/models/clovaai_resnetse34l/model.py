@@ -9,9 +9,9 @@ from .configurations import ClovaaiResnetse34lConfigs
 
 
 @register_model('clovaai_resnetse34l', dataclass=ClovaaiResnetse34lConfigs)
-class ECAPAModel(SpeakerEmbeddingModel):
+class ClovaaiResnetse34lModel(SpeakerEmbeddingModel):
     def __init__(self, configs: DictConfig, num_classes: int):
-        super(SpeakerEmbeddingModel, self).__init__(configs, num_classes)
+        super(ClovaaiResnetse34lModel, self).__init__(configs, num_classes)
 
     def build_model(self):
         self.model = MainModel(

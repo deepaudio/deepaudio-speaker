@@ -4,7 +4,7 @@ defaults:
   - feature: fbank
   - augment: default
   - dataset: voxceleb2
-  - criterion: aamsoftmax
+  - criterion: pyannote_aamsoftmax
   - lr_scheduler: warmup_reduce_lr_on_plateau
-  - model: resnet101
+  - model: clovaai_ecapa
   - trainer: cpu
