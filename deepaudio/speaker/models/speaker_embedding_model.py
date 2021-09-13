@@ -15,6 +15,8 @@ class SpeakerEmbeddingModel(SpeakerModel):
         return self.model(inputs)
 
     def training_step(self, batch: tuple, batch_idx: int):
+        if self.configs.criterion.criterion_name in ['adaptive_aamsoftmax']:
+            self.criterion.step(self.global_step)
         X = batch['X']
         y = batch['y']
         embeddings = self.forward(X)
