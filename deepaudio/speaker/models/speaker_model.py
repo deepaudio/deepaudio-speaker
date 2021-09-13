@@ -21,7 +21,6 @@ class SpeakerModel(pl.LightningModule):
         self.build_model()
         self.criterion = self.configure_criterion(configs.criterion.name)
 
-
     def build_model(self):
         raise NotImplementedError
 

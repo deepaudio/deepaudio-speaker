@@ -23,7 +23,10 @@ class Inference:
         self.audio = Audio()
         self.feature_extractor = AUDIO_FEATURE_TRANSFORM_REGISTRY[configs.feature.name](configs)
 
-    def make_embedding(self, wav):
-        waveform = self.audio(wav)
+    def make_embedding(self, wav, seg=None):
+        if seg is None:
+            waveform = self.audio(wav)
+        else:
+            waveform = self.audio.crop(wav, seg)
         feature = self.feature_extractor(waveform)
         return self.model.make_embedding(feature)
