@@ -86,7 +86,7 @@ class AdaptiveAAMSoftmax(nn.Module):
         self.margin = configs.criterion.margin
         self.logsoftmax_ = nn.LogSoftmax(dim=1)
         self.loss_ = nn.NLLLoss()
-        self.warmup_steps = configs.lr_scheduler.warmup_steps if configs.lr_scheduler.scheduler_name.starts_with('warmup') else 0
+        self.warmup_steps = configs.lr_scheduler.warmup_steps if configs.lr_scheduler.scheduler_name.startswith('warmup') else 0
         self.increase_steps = configs.criterion.increase_steps
         self.increase_rate = self.margin / (self.increase_steps - self.warmup_steps)
 
