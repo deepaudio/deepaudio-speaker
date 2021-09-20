@@ -1,6 +1,8 @@
 from hydra.core.config_store import ConfigStore
 from deepaudio.speaker.data.augmentation.configurations import AugmentConfigs
 from deepaudio.speaker.datasets.voxceleb2.configurations import Voxceleb2Configs
+from deepaudio.speaker.datasets.dataframe.configurations import DataframeConfigs
+
 from .configurations import (
     CPUTrainerConfigs,
     GPUTrainerConfigs,
@@ -24,6 +26,7 @@ SPEAKER_TRAIN_CONFIGS = [
 
 DATASET_DATACLASS_REGISTRY = {
     "voxceleb2": Voxceleb2Configs,
+    'dataframe': DataframeConfigs,
 }
 TRAINER_DATACLASS_REGISTRY = {
     "cpu": CPUTrainerConfigs,

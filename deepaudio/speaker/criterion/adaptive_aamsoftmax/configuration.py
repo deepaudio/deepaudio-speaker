@@ -9,7 +9,7 @@ class AdaptiveAAMSoftmaxConfigs(DeepMMDataclass):
         default="adaptive_aamsoftmax", metadata={"help": "Criterion name for training"}
     )
     margin: float = field(
-        default=0.2, metadata={"help": "The angular margin penalty in radians."}
+        default=0.3, metadata={"help": "The angular margin penalty in radians."}
     )
 
     scale: float = field(
