@@ -19,14 +19,14 @@ class Inference:
     ):
         loaded_ckpt = pl_load(str(path_for_pl))
         configs = loaded_ckpt["configs"]
-        self.model = SpeakerEmbeddingModel.from_pretrained(str(path_for_pl), device, strict).eval()
+        self.model = SpeakerEmbeddingModel.from_pretrained(str(path_for_pl), device, strict).eval().cuda()
         self.audio = Audio()
-        self.feature_extractor = AUDIO_FEATURE_TRANSFORM_REGISTRY[configs.feature.name](configs)
+        self.feature_extractor = AUDIO_FEATURE_TRANSFORM_REGISTRY[configs.feature.name](configs).cuda()
 
     def make_embedding(self, wav, seg=None):
         if seg is None:
-            waveform = self.audio(wav)
+            waveform, _ = self.audio(wav)
         else:
-            waveform = self.audio.crop(wav, seg)
-        feature = self.feature_extractor(waveform)
+            waveform, _ = self.audio.crop(wav, seg)
+        feature = self.feature_extractor(waveform.cuda())
         return self.model.make_embedding(feature)

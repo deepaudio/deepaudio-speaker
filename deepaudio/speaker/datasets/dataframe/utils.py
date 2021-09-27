@@ -14,6 +14,17 @@ def load_dataframe(wav_dir, table_path):
     return df
 
 
+def load_trial_dataframe(wav_dir, table_path):
+    df = pd.read_csv(table_path, header=None, delimiter=' ')
+    df[1] = df[1].apply(lambda x: Path(wav_dir) / f'{x}')
+    df[2] = df[2].apply(lambda x: Path(wav_dir) / f'{x}')
+    trials = []
+    for row in df.iterrows():
+        y, enroll, test = row[1]
+        trials.append((enroll, test, y))
+    return trials
+
+
 def get_speaker_from_dataframe(dataframe):
     return set(dataframe[3])
 
@@ -39,19 +50,19 @@ def split_segment(segment, duration, step):
     return Timeline(segs)
 
 
-def get_dataset_items(database_yml, dataset_names):
+def get_dataset_items(database_yml, dataset_names, category='train'):
     dataset_items = []
     dataset_names = dataset_names.split(',')
     dataset_names = [n.strip() for n in dataset_names]
     with open(database_yml) as fp:
         dataset = yaml.load(fp, Loader=yaml.FullLoader)
     for name in dataset_names:
-        dataset_items.append(get_dataset_item(dataset, name))
+        dataset_items.append(get_dataset_item(dataset, name, category))
     return dataset_items
 
 
-def get_dataset_item(dataset, name):
-    dataset_item = dataset['Datasets']['SpeakerDataset']['train'].get(name, None)
+def get_dataset_item(dataset, name, category='train'):
+    dataset_item = dataset['Datasets']['SpeakerDataset'][category].get(name, None)
     if dataset_item is None:
         msg = f'{name} does not exist'
         raise ValueError(msg)
