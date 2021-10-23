@@ -42,6 +42,9 @@ class ReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
     lr_factor: float = field(
         default=0.9, metadata={"help": "Factor by which the learning rate will be reduced. new_lr = lr * factor."}
     )
+    tolr: float = field(
+        default=0.01, metadata={"help": "Tolr for loss."}
+    )
 
 
 @register_scheduler("reduce_lr_on_plateau", dataclass=ReduceLROnPlateauConfigs)
@@ -64,12 +67,13 @@ class ReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROnPlateau):
         self.lr = configs.lr_scheduler.lr
         self.lr_patience = configs.lr_scheduler.lr_patience
         self.lr_factor = configs.lr_scheduler.lr_factor
+        self.tolr = configs.lr_scheduler.tolr
         self.val_loss = 100.0
         self.count = 0
 
     def step(self, val_loss: Optional[float] = None):
         if val_loss is not None:
-            if self.val_loss < val_loss:
+            if self.val_loss < val_loss+self.tolr:
                 self.count += 1
                 self.val_loss = val_loss
             else:
