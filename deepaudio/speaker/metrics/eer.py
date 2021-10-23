@@ -19,7 +19,7 @@ def model_eer(model, trials):
     ys = []
     y_preds = []
     for uri_enroll, uri_test, y in trials:
-        y_pred = distance.cosine(embeddings[uri_enroll], embeddings[uri_test])
+        y_pred = 1 - distance.cosine(embeddings[uri_enroll], embeddings[uri_test])
         y_preds.append(y_pred)
         ys.append(y)
     return compute_eer(ys, y_preds)

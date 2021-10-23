@@ -53,9 +53,56 @@ $ deepaudio-speaker-train  \
     trainer=gpu \
     criterion=pyannote_aamsoftmax
 ```
-- Example2: Extract speaker embedding with trained model.
+- Example2: Train ecapa model to get eer around 1.13% for voxceleb 1 trials ( original version, without norm operation).
 
-Todo
+```
+$ git clone https://github.com/deepaudio/deepaudio-database.git
+$ cd deepaudio-database
+$ vim database.yml # edit the list path and wav path
+$ deepaudio-speaker-train  \
+    dataset=dataframe \
+    dataset.database_yml=/your/path/to/deepaudio-database/database.yml \
+    dataset.dataset_name=voxceleb2_dev \
+    model=clovaai_ecapa \
+    model.channels=1024 \
+    model.embed_dim=256 \
+    model.min_num_frames=200 \
+    model.min_num_frames=300 \
+    feature=fbank \
+    lr_scheduler=warmup_adaptive_reduce_lr_on_plateau \
+    lr_scheduler.warmup_steps=30000 \
+    lr_scheduler.lr_factor=0.8 \
+    trainer=gpu \
+    trainer.batch_size=128 \
+    trainer.max_epochs=30 \
+    trainer.num_checkpoints=30 \
+    criterion=adaptive_aamsoftmax \
+    criterion.increase_steps=300000 \
+    augment.apply_spec_augment=True\
+    augment.time_mask_num=1 \
+    augment.apply_noise_augment=True \
+    augment.apply_reverb_augment=True \
+    augment.apply_noise_reverb_augment=True \
+    augment.noise_augment_weight=2 \
+    augment.noise_dataset_dir=/your/path/to/musan \
+    augment.rir_dataset_dir=/your/path/to/RIRS_NOISES/simulated_rirs/ \
+```
+
+- Example3: Compute the equal error rate (EER)
+```python
+from deepaudio.speaker.datasets.dataframe.utils import load_trial_dataframe, get_dataset_items
+from deepaudio.speaker.models.inference import Inference
+from deepaudio.speaker.metrics.eer import model_eer
+
+trial_meta = get_dataset_items('/your/path/to/deepaudio-database/database.yml',
+                               'voxceleb1_o', 'trial')
+wav_dir, trial_path = trial_meta[0]
+trials = load_trial_dataframe(wav_dir, trial_path)
+inference = Inference('/your/path/to/checkpoint.ckpt')
+eer, thresh = model_eer(inference, trials)
+
+```
+
 
 ## Model Architecture
 [**ECAPA-TDNN**](https://arxiv.org/pdf/2005.07143.pdf) This is an unofficial implementation from @lawlict. Please find more details in this [link](https://github.com/lawlict/ECAPA-TDNN).
