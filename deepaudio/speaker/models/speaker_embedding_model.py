@@ -1,5 +1,6 @@
 import torch
 from torch import Tensor
+import onnxruntime
 
 from pytorch_lightning.utilities.cloud_io import load as pl_load
 
@@ -78,6 +79,10 @@ class SpeakerEmbeddingModel(SpeakerModel):
             configs=loaded_checkpoint["configs"],
             num_classes=num_classes
         )
+
+    def to_torchscript(self, filepath):
+        script = self.model.to_torchscript()
+        torch.jit.save(script, filepath)
 
     def make_embedding(self, feature):
         if self.model.training:

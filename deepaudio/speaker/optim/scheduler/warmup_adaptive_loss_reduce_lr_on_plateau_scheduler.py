@@ -31,12 +31,14 @@ from deepaudio.speaker.optim.scheduler import register_scheduler
 from deepaudio.speaker.optim.scheduler.lr_scheduler import LearningRateScheduler
 from deepaudio.speaker.optim.scheduler.reduce_lr_on_plateau_scheduler import ReduceLROnPlateauScheduler
 from deepaudio.speaker.optim.scheduler.warmup_scheduler import WarmupLRScheduler
+from deepaudio.speaker.optim.scheduler.fix_lr_scheduler import FixLRScheduler
+
 
 
 @dataclass
 class WarmupAdaptiveReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
     scheduler_name: str = field(
-        default="warmup_reduce_lr_on_plateau", metadata={"help": "Name of learning rate scheduler."}
+        default="warmup_adaptive_reduce_lr_on_plateau", metadata={"help": "Name of learning rate scheduler."}
     )
     lr_patience: int = field(
         default=1, metadata={"help": "Number of epochs with no improvement after which learning rate will be reduced."}
@@ -87,6 +89,10 @@ class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROn
                 optimizer,
                 configs,
             ),
+            FixLRScheduler(
+                optimizer,
+                configs,
+            ),
         ]
 
     def _decide_stage(self):
@@ -104,6 +110,8 @@ class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROn
             self.schedulers[0].step()
         elif stage == 1:
             self.schedulers[1].step(val_loss)
+        elif stage == 2:
+            self.schedulers[2].step(val_loss)
 
         self.update_steps += 1
 
