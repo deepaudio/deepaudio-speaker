@@ -100,7 +100,12 @@ wav_dir, trial_path = trial_meta[0]
 trials = load_trial_dataframe(wav_dir, trial_path)
 inference = Inference('/your/path/to/checkpoint.ckpt')
 eer, thresh = model_eer(inference, trials)
-
+```
+- Example4: Export torchscript model 
+```python
+from deepaudio.speaker.models.inference import Inference
+model = Inference('/your/path/to/checkpoint.ckpt').model
+model.to_torchscript('filepath/to/model')
 ```
 
 

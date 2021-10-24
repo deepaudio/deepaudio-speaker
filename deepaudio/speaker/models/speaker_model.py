@@ -97,6 +97,12 @@ class SpeakerModel(pl.LightningModule):
                 'monitor': 'val_loss',
                 'interval': 'step',
             }
+        elif self.configs.lr_scheduler.scheduler_name == "warmup_adaptive_reduce_lr_on_plateau":
+            lr_scheduler = {
+                'scheduler': scheduler,
+                'monitor': 'val_loss',
+                'interval': 'step',
+            }
         else:
             lr_scheduler = {
                 'scheduler': scheduler,
