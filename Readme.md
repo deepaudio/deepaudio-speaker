@@ -67,7 +67,7 @@ $ deepaudio-speaker-train  \
     model.channels=1024 \
     model.embed_dim=256 \
     model.min_num_frames=200 \
-    model.min_num_frames=300 \
+    model.max_num_frames=300 \
     feature=fbank \
     lr_scheduler=warmup_adaptive_reduce_lr_on_plateau \
     lr_scheduler.warmup_steps=30000 \
