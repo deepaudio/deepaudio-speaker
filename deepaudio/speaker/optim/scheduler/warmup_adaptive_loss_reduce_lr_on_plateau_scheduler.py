@@ -111,7 +111,7 @@ class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROn
         elif stage == 1:
             self.schedulers[1].step(val_loss)
         elif stage == 2:
-            self.schedulers[2].step(val_loss)
+            self.schedulers[2].step()
 
         self.update_steps += 1
 

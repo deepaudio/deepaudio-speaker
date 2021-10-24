@@ -1,6 +1,5 @@
 import torch
 from torch import Tensor
-import onnxruntime
 
 from pytorch_lightning.utilities.cloud_io import load as pl_load
 
