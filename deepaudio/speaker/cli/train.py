@@ -8,6 +8,8 @@ from deepaudio.speaker.datasets import DATA_MODULE_REGISTRY
 from deepaudio.speaker.dataclass.initialize import hydra_train_init
 from deepaudio.speaker.models import MODEL_REGISTRY
 from deepaudio.speaker.utils import parse_configs, get_pl_trainer
+from deepaudio.speaker.models.speaker_embedding_model import SpeakerEmbeddingModel
+
 
 
 @hydra.main(config_path=os.path.join("..", "configs"), config_name="train")
@@ -18,7 +20,10 @@ def hydra_main(configs: DictConfig) -> None:
 
     data_module = DATA_MODULE_REGISTRY[configs.dataset.name](configs)
     data_module.prepare_data()
-    model = MODEL_REGISTRY[configs.model.name](configs=configs, num_classes=data_module.num_classes)
+    if configs.model.pretrained is True:
+        model = SpeakerEmbeddingModel.from_pretrained(configs.model.checkpoint, configs=configs)
+    else:
+        model = MODEL_REGISTRY[configs.model.name](configs=configs, num_classes=data_module.num_classes)
     trainer = get_pl_trainer(configs, num_devices, logger)
     trainer.fit(model, data_module)
 

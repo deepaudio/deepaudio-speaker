@@ -66,16 +66,20 @@ class SpeakerEmbeddingModel(SpeakerModel):
     @classmethod
     def from_pretrained(cls, path_for_pl,
                         map_location=None,
-                        strict=False):
+                        strict=False, configs=None):
         loaded_checkpoint = pl_load(path_for_pl, map_location=map_location)
         model_name: str = loaded_checkpoint["configs"].model.name
         num_classes = loaded_checkpoint["num_classes"]
+        if configs is not None:
+            new_configs = configs
+        else:
+            new_configs = loaded_checkpoint["configs"]
         Klass = MODEL_REGISTRY[model_name]
         return Klass.load_from_checkpoint(
             path_for_pl,
             map_location=map_location,
             strict=strict,
-            configs=loaded_checkpoint["configs"],
+            configs=new_configs,
             num_classes=num_classes
         )
 

@@ -82,6 +82,7 @@ class SpeakerModel(pl.LightningModule):
         self.optimizer = SUPPORTED_OPTIMIZERS[self.configs.model.optimizer](
             self.parameters(),
             lr=self.configs.lr_scheduler.lr,
+            weight_decay=1e-5,
         )
         scheduler = SCHEDULER_REGISTRY[self.configs.lr_scheduler.scheduler_name](self.optimizer, self.configs)
 
@@ -104,6 +105,7 @@ class SpeakerModel(pl.LightningModule):
                 'interval': 'step',
             }
         else:
+            print('by step')
             lr_scheduler = {
                 'scheduler': scheduler,
                 'interval': 'step',
