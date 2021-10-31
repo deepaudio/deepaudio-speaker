@@ -37,3 +37,9 @@ class ClovaaiECAPAConfigs(DeepMMDataclass):
     max_num_frames: int = field(
         default=400, metadata={"help": "Max num frames."}
     )
+    pretrained: bool = field(
+        default=False, metadata={"help": "Use pretrained model or not."}
+    )
+    checkpoint: str = field(
+        default="None", metadata={"help": "Checkpoint path."}
+    )

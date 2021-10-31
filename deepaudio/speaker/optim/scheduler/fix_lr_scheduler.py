@@ -36,7 +36,6 @@ class FixLRScheduler(LearningRateScheduler):
         super(FixLRScheduler, self).__init__(optimizer, configs.lr_scheduler.peak_lr)
         self.lr = configs.lr_scheduler.peak_lr
 
-    def step(self, val_loss: Optional[torch.FloatTensor] = None):
+    def step(self):
         self.set_lr(self.optimizer, self.lr)
-        self.update_steps += 1
         return self.lr

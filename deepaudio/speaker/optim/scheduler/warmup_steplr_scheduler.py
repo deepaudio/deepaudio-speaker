@@ -29,25 +29,18 @@ from typing import Optional
 from deepaudio.speaker.dataclass.configurations import LearningRateSchedulerConfigs
 from deepaudio.speaker.optim.scheduler import register_scheduler
 from deepaudio.speaker.optim.scheduler.lr_scheduler import LearningRateScheduler
-from deepaudio.speaker.optim.scheduler.reduce_lr_on_plateau_scheduler import ReduceLROnPlateauScheduler
 from deepaudio.speaker.optim.scheduler.warmup_scheduler import WarmupLRScheduler
 from deepaudio.speaker.optim.scheduler.fix_lr_scheduler import FixLRScheduler
-
+from deepaudio.speaker.optim.scheduler.step_lr_scheduler import StepLRScheduler
 
 
 @dataclass
-class WarmupAdaptiveReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
+class WarmupStepLRConfigs(LearningRateSchedulerConfigs):
     scheduler_name: str = field(
-        default="warmup_adaptive_reduce_lr_on_plateau", metadata={"help": "Name of learning rate scheduler."}
-    )
-    lr_patience: int = field(
-        default=1, metadata={"help": "Number of epochs with no improvement after which learning rate will be reduced."}
+        default="warmup_step_lr", metadata={"help": "Name of learning rate scheduler."}
     )
     lr_factor: float = field(
         default=0.3, metadata={"help": "Factor by which the learning rate will be reduced. new_lr = lr * factor."}
-    )
-    tolr: float = field(
-        default=0.01, metadata={"help": "Tolr for loss."}
     )
     peak_lr: float = field(
         default=1e-04, metadata={"help": "Maximum learning rate."}
@@ -58,10 +51,19 @@ class WarmupAdaptiveReduceLROnPlateauConfigs(LearningRateSchedulerConfigs):
     warmup_steps: int = field(
         default=4000, metadata={"help": "Warmup the learning rate linearly for the first N updates"}
     )
+    min_lr: float = field(
+        default=1e-7, metadata={"help": "Min learning rate."}
+    )
+    step_size: int = field(
+        default=70000, metadata={"help": "Step size to decay"}
+    )
+    freeze_steps: int = field(
+        default=400000, metadata={"help": "Step size to decay"}
+    )
 
 
-@register_scheduler("warmup_adaptive_reduce_lr_on_plateau", dataclass=WarmupAdaptiveReduceLROnPlateauConfigs)
-class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROnPlateau):
+@register_scheduler("warmup_step_lr", dataclass=WarmupStepLRConfigs)
+class WarmupStepLRScheduler(LearningRateScheduler):
     r"""
     Warmup learning rate until `warmup_steps` and reduce learning rate on plateau after.
 
@@ -74,22 +76,22 @@ class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROn
             optimizer: Optimizer,
             configs: DictConfig,
     ) -> None:
-        super(WarmupAdaptiveReduceLROnPlateauScheduler, self).__init__(optimizer, configs.lr_scheduler.lr)
+        super(WarmupStepLRScheduler, self).__init__(optimizer, configs.lr_scheduler.lr)
         self.warmup_steps = configs.lr_scheduler.warmup_steps
         self.update_steps = 0
         self.warmup_rate = (configs.lr_scheduler.peak_lr - configs.lr_scheduler.init_lr) / self.warmup_steps \
             if self.warmup_steps != 0 else 0
-        self.increase_steps = configs.criterion.increase_steps
+        self.freeze_steps = configs.lr_scheduler.freeze_steps
         self.schedulers = [
             WarmupLRScheduler(
                 optimizer,
                 configs,
             ),
-            ReduceLROnPlateauScheduler(
+            FixLRScheduler(
                 optimizer,
                 configs,
             ),
-            FixLRScheduler(
+            StepLRScheduler(
                 optimizer,
                 configs,
             ),
@@ -98,10 +100,10 @@ class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROn
     def _decide_stage(self):
         if self.update_steps < self.warmup_steps:
             return 0, self.update_steps
-        elif self.update_steps < self.increase_steps:
-            return 2, self.update_steps
+        elif self.update_steps < self.freeze_steps:
+            return 1, self.update_steps
         else:
-            return 1, None
+            return 2, None
 
     def step(self, val_loss: Optional[float] = None):
         stage, steps_in_stage = self._decide_stage()
@@ -109,7 +111,7 @@ class WarmupAdaptiveReduceLROnPlateauScheduler(LearningRateScheduler, ReduceLROn
         if stage == 0:
             self.schedulers[0].step()
         elif stage == 1:
-            self.schedulers[1].step(val_loss)
+            self.schedulers[1].step()
         elif stage == 2:
             self.schedulers[2].step()
 
