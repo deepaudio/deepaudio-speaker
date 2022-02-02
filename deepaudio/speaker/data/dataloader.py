@@ -17,6 +17,12 @@ def _collate_fn(batch, min_num_frames, max_num_frames):
     """
     def get_min_num_frames(batch):
         return min([sample[0].size(0) for sample in batch])
+    def flatten(batch):
+        batch_flatten = []
+        for items in batch:
+            for X, y in zip(items[0], items[1]):
+                batch_flatten.append((X,y))
+        return batch_flatten
 
     def get_subsample(feature, num_frames):
         length = feature.size(0)
@@ -28,7 +34,7 @@ def _collate_fn(batch, min_num_frames, max_num_frames):
         else:
             start = np.random.randint(0, length - num_frames)
             return feature[start:start + num_frames]
-
+    batch = flatten(batch)
     min_num_frames_batch = get_min_num_frames(batch)
     num_frames = np.random.randint(min_num_frames, max_num_frames)
     num_frames = min(num_frames, min_num_frames_batch)
