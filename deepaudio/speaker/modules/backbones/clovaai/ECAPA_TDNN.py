@@ -61,18 +61,36 @@ class Bottle2neck(nn.Module):
         out = self.bn1(out)
 
         spx = torch.split(out, self.width, 1)
-        for i in range(self.nums):
-            if i == 0:
-                sp = spx[i]
-            else:
+        sp = spx[0]
+        out = sp
+        # Update model to support torch scripted:
+        # Expected integer literal for index. ModuleList/Sequential
+        # indexing is only supported with integer literal.
+        for i, conv_i in enumerate(self.convs):
+            if i > 0:
                 sp = sp + spx[i]
-            sp = self.convs[i](sp)
+            sp = conv_i(sp)
             sp = self.relu(sp)
-            sp = self.bns[i](sp)
+            for j, bn_j in enumerate(self.bns):
+                if i == j:
+                    sp = bn_j(sp)
             if i == 0:
                 out = sp
             else:
                 out = torch.cat((out, sp), 1)
+        # Keep the original behavior as below.
+        # for i in range(self.nums):
+        #     if i == 0:
+        #         sp = spx[i]
+        #     else:
+        #         sp = sp + spx[i]
+        #     sp = self.convs[i](sp)
+        #     sp = self.relu(sp)
+        #     sp = self.bns[i](sp)
+        #     if i == 0:
+        #         out = sp
+        #     else:
+        #         out = torch.cat((out, sp), 1)
 
         out = torch.cat((out, spx[self.nums]), 1)
 
