@@ -12,7 +12,7 @@ from deepaudio.speaker.optim.scheduler.lr_scheduler import LearningRateScheduler
 @dataclass
 class StepLRSchedulerConfigs(LearningRateSchedulerConfigs):
     scheduler_name: str = field(
-        default="warmup", metadata={"help": "Name of learning rate scheduler."}
+        default="steplr", metadata={"help": "Name of learning rate scheduler."}
     )
     peak_lr: float = field(
         default=1e-04, metadata={"help": "Maximum learning rate."}

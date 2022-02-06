@@ -29,6 +29,7 @@ class SpeakerAudioDataset(Dataset):
         super(SpeakerAudioDataset, self).__init__()
         self.configs = configs
         self.utts = utts
+        self.labels = [utt[1] for utt in utts]
         self.audio = Audio()
         self.feature_extractor = AUDIO_FEATURE_TRANSFORM_REGISTRY[configs.feature.name](configs)
         self.augmentations = [self.NONE_AUGMENT]
@@ -68,11 +69,18 @@ class SpeakerAudioDataset(Dataset):
             feature = self._spec_augmentor(feature)
         return feature.squeeze(0)
 
-    def __getitem__(self, idx):
-        wav, speaker_id, vad = self.utts[idx]
-        augment = np.random.choice(self.augmentations, p=self.augmentations_prob)
-        feature = self._parse_audio(wav, augment, vad)
-        return feature, speaker_id
+    def __getitem__(self, idxs):
+        if isinstance(idxs, int):
+            idxs = [idxs]
+        features = []
+        speaker_ids = []
+        for idx in idxs:
+            wav, speaker_id, vad = self.utts[idx]
+            augment = np.random.choice(self.augmentations, p=self.augmentations_prob)
+            feature = self._parse_audio(wav, augment, vad)
+            features.append(feature)
+            speaker_ids.append(speaker_id)
+        return features, speaker_ids
 
     def __len__(self):
         return len(self.utts)
