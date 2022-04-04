@@ -5,6 +5,6 @@ defaults:
   - augment: default
   - dataset: voxceleb2
   - criterion: pyannote_aamsoftmax
-  - lr_scheduler: warmup_reduce_lr_on_plateau
+  - lr_scheduler: steplr
   - model: clovaai_ecapa
   - trainer: cpu

@@ -85,7 +85,7 @@ class SpeakerEmbeddingModel(SpeakerModel):
         )
 
     def to_torchscript(self, filepath):
-        script = self.model.to_torchscript()
+        script = torch.jit.script(self.model)
         torch.jit.save(script, filepath)
 
     def make_embedding(self, feature):
