@@ -9,10 +9,13 @@ class DataframeConfigs(DeepMMDataclass):
         default="dataframe", metadata={"help": "Select dataset for training (librispeech, ksponspeech, aishell, lm)"}
     )
     database_yml: str = field(
-        default="/home/tian/auido_data/deepaudio-database/database.yml", metadata={"help": "Path of database.yml"}
+        default="/Users/yin/project/deepaudio-database/database.yml", metadata={"help": "Path of database.yml"}
     )
     dataset_name: str = field(
         default="debug", metadata={"help": "Database name. If you want use multiple dataset, please use ',' to split"}
+    )
+    sampler: str = field(
+        default="clovaai", metadata={"help": "Sampler name."}
     )
     duration: float = field(
         default=4, metadata={"help": "Sliding window duration."}

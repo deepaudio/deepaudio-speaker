@@ -15,7 +15,8 @@ class SpeakerEmbeddingModel(SpeakerModel):
         return self.model(inputs)
 
     def training_step(self, batch: tuple, batch_idx: int):
-        if self.configs.criterion.name in ['adaptive_aamsoftmax'] and self.global_step == 0:
+        if self.configs.criterion.name in ['adaptive_aamsoftmax',
+                                           'adaptive_subcenter_aamsoftmax'] and self.global_step == 0:
             self.log(
                 "val_loss",
                 15,
@@ -24,7 +25,7 @@ class SpeakerEmbeddingModel(SpeakerModel):
                 prog_bar=True,
                 logger=True,
             )
-        if self.configs.criterion.name in ['adaptive_aamsoftmax']:
+        if self.configs.criterion.name in ['adaptive_aamsoftmax', 'adaptive_subcenter_aamsoftmax']:
             self.criterion.step(self.global_step)
             self.log(
                 "margin",

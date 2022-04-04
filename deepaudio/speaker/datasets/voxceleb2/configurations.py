@@ -11,3 +11,9 @@ class Voxceleb2Configs(DeepMMDataclass):
     dataset_path: str = field(
         default="/Users/yin/project/data/aac4", metadata={"help": "Path of dataset"}
     )
+    sampler: str = field(
+        default="clovaai", metadata={"help": "Sampler name."}
+    )
+    per_speaker: int = field(
+        default=3, metadata={"help": "Sampler name."}
+    )
