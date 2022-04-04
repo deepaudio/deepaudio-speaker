@@ -7,6 +7,8 @@ from torch.utils.data import DataLoader
 
 from deepaudio.speaker.data.dataset import SpeakerAudioDataset
 from deepaudio.speaker.data.dataloader import SpeakerUttDataLoader
+from deepaudio.speaker.data.samplers import ClovaaiSampler
+
 
 from .preprocess import get_speaker_list, get_speaker_wavs
 from .. import register_data_module
@@ -29,13 +31,20 @@ class LightningVoxceleb2DataModule(pl.LightningDataModule):
         self.valid_dataset = SpeakerAudioDataset(self.configs, self.valid_utts)
 
     def train_dataloader(self) -> DataLoader:
+        if self.configs.dataset.sampler == 'clovaai':
+            sampler = ClovaaiSampler(self.train_dataset.labels, self.configs)
+            shuffle = False
+        else:
+            sampler = None
+            shuffle = True
         return SpeakerUttDataLoader(
             dataset=self.train_dataset,
             num_workers=self.configs.trainer.num_workers,
             min_num_frames=self.configs.model.min_num_frames,
             max_num_frames=self.configs.model.max_num_frames,
             batch_size=self.configs.trainer.batch_size,
-            shuffle=True
+            shuffle=shuffle,
+            sampler=sampler
         )
 
     def val_dataloader(self) -> DataLoader:
