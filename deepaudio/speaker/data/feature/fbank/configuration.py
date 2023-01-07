@@ -11,7 +11,7 @@ class FBankConfigs(DeepMMDataclass):
         default=16000, metadata={"help": "Sampling rate of audio"}
     )
     frame_duration: float = field(
-        default=0.02, metadata={"help": "Frame length for spectrogram"}
+        default=0.025, metadata={"help": "Frame length for spectrogram"}
     )
     frame_shift: float = field(
         default=0.01, metadata={"help": "Length of hop between STFT"}
