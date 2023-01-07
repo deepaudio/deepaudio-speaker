@@ -110,6 +110,8 @@ model.to_torchscript('filepath/to/model')
 
 
 ## Model Architecture
+[**Wespeaker**](https://github.com/wenet-e2e/wespeaker/tree/master/wespeaker/models) Models from wespeaker.
+
 [**ECAPA-TDNN**](https://arxiv.org/pdf/2005.07143.pdf) This is an unofficial implementation from @lawlict. Please find more details in this [link](https://github.com/lawlict/ECAPA-TDNN).
 
 [**ECAPA-TDNN**](https://arxiv.org/pdf/2005.07143.pdf) This is implemented by @joonson. Please find more details in this [link](https://github.com/clovaai/voxceleb_trainer/issues/86#issuecomment-739991154).
